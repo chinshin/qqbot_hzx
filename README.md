@@ -1,7 +1,7 @@
 # qqbot_hzx
 基于qqbot的QQ微打赏机器人(BEJ48-黄子璇)</br></br>
 本项目是一个插件，依赖于: [pandolia/qqbot](https://github.com/pandolia/qqbot) </br></br>
-环境：`Python 2.7/3.4+ `
+环境：`Python 2.7/3.4+ `&`requests`
 
   ## 介绍
 `start.py`  启动文件，包含关键字回复和定时任务</br>

@@ -8,9 +8,11 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 def getdata():
+	#更改ajax_url
 	ajax_url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value=6212622903&containerid=1076036212622903'
 	header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'}
 
+	#更改value&pro_id
 	form = {
 	    'type': 'uid',
 	    'value': 6212622903,
@@ -18,6 +20,7 @@ def getdata():
 	}
 
 	response = requests.post(ajax_url, form, headers=header).json()
+	#更改0，如果有置顶微博，则0对应置顶微博，1有时对应微博推荐，根据实际情况修改
 	datas = response['cards'][0]
 	return datas
 

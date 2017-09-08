@@ -3,11 +3,16 @@
 本项目是一个插件，依赖于: [pandolia/qqbot](https://github.com/pandolia/qqbot) </br></br>
 环境：`Python 2.7/3.4+ `&`requests`
 
+  ##  更新
+2017.09.08更新：增加了微博监控功能 借鉴了 [PYF0311/wds_Crawler](https://github.com/PYF0311/wds_Crawler)
+
   ## 介绍
 `start.py`  启动文件，包含关键字回复和定时任务</br>
 `wds.py`  返回集资名和集资链接</br>
 `wds20.py`  返回集资榜TOP20</br>
 `link.py`  修改集资名、集资链接等参数</br>
+2017.09.08新增:</br>
+`weibo.py`  返回新浪微博相关参数</br>
 
   ##  安装和配置
   1.[qqbot安装](https://github.com/pandolia/qqbot#二安装方法):`pip install qqbot`
@@ -49,4 +54,12 @@
     5.单击任意一个ajax_comment，在右侧标签中选择Headers
     
     6.滚动headers下页面到最后Form Data，即可看到moxi_id和pro_id
-    
+
+2017.09.08新增:</br>
+通过`weibo.py`：</br>
+  * 设置需要监控的微博信息
+    * `ajax_url` 
+    * `value`
+    * `pro_id`
+
+设置方法可参考[nikochan.cc](http://www.nikochan.cc/2017/08/03/Crawlerweibonotloggin/)

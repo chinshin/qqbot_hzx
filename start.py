@@ -6,9 +6,17 @@ from qqbot import qqbotsched
 import requests
 import math
 import json
+import weibo
 
 global commentNum
 global firstcheck
+
+global weiboid
+global firstcheck_weibo
+
+weiboid = ""
+firstcheck_weibo = 1
+
 commentNum = 0
 firstcheck = 1
 #关键字回复
@@ -16,7 +24,7 @@ def onQQMessage(bot, contact, member, content):
     if content == 'wds':
         bot.SendTo(contact, wds.start())
     elif content == "集资":
-    	bot.SendTo(contact, wds.start())
+        bot.SendTo(contact, wds.start())
     elif content == 'wds20':
         bot.SendTo(contact, wds20.start())
     elif content == 'rank':
@@ -33,6 +41,37 @@ def onQQMessage(bot, contact, member, content):
     elif content == "欢迎新人":
         welcome = "欢迎聚聚加入BEJ48-黄子璇的应援群！" + '\n' + "大家可以叫子璇宝宝叁玖 ~" + '\n' + "叁玖是一只土生土长的北京姑娘，生日是5月20日，生在2002年的金牛座。" + '\n' + "九春三秋，只为遇见你。" + '\n' + "希望你我可以相知相识～" + '\n' + '\n' + "三分钟带你领略甜甜的叁玖" + '\n' + "首演unit《爱的魔法》：http://t.cn/RolMikW" + '\n' + '\n' + "出道以来第五场公演unit《爱的魔法》：http://t.cn/RCb8QBn" + '\n' + '\n' + "第四届总决选拉票公演：http://t.cn/RCb8gzH" + '\n' + '\n' + "更多补档内容请戳b站：BEJ48-黄子璇应援会 http://t.cn/RCbRLjZ" + '\n' + '\n' + "最后也请聚聚关注下叁玖的微博与超级话题吧" + '\n' + "@BEJ48-黄子璇：http://t.cn/RCbRiAe" + '\n' + "@BEJ48-黄子璇应援会：http://t.cn/RCbRNu1" + '\n' + "#黄子璇#超级话题：http://t.cn/RCbRQg2" + '\n' + '\n' + "让我们陪着这个刚出道不久的小孩子长大，看着她成为更好的人，一起给她最好的应援吧~（鞠躬）"
         bot.SendTo(contact, welcome)
+    elif content == '39微博':
+        bot.SendTo(contact, weibo.getscheme())
+
+#定时任务。每五分钟获取一次微博数据，如果有新的微博，自动发送到群。
+#可修改定时任务时间来提高查询频率，其他无需修改
+@qqbotsched(hour='0-23', minute='0-59/3')
+def mytask3(bot):
+	global weiboid
+	global firstcheck_weibo
+	wbcontent = ""
+	gl = bot.List('group', '606642799')
+	if gl is not None:
+	    for group in gl:
+	        if (firstcheck_weibo == 1):
+	            weiboid = weibo.checkid()
+	            firstcheck_weibo = 0
+	        checkwbid = weibo.checkid()
+	        if (weiboid != checkwbid):
+	            weiboid = checkwbid
+	            retweet = weibo.checkretweet()
+	            wbpic = weibo.checkpic()
+	            wbscheme = weibo.getscheme()
+	            if (retweet):
+	                wbcontent = "小偶像刚刚[转发]了一条微博：" + '\n' + '\n' + weibo.getretweetweibo() + '\n'
+	                wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
+	            else:
+	                wbcontent = "小偶像刚刚发了一条新微博：" + '\n' + '\n' + weibo.getweibo() + '\n'
+	                if (wbpic):
+	                    wbcontent = wbcontent + weibo.getpic()
+	                wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
+	            bot.SendTo(group, wbcontent)
 
 #定时任务。qqbot每天定时重启前的提醒。
 @qqbotsched(hour='22', minute='28')

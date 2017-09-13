@@ -79,12 +79,12 @@ def mytask2(bot):
 	gl = bot.List('group', '606642799')
 	if gl is not None:
 	    for group in gl:
-	    	attention = "[attention]" + '\n' + "提醒89哥，废物机器人将在两分钟后重启"
+	        attention = "[attention]" + '\n' + "提醒89哥，废物机器人将在两分钟后重启"
 	        bot.SendTo(group, attention)
 
-#定时任务。每五分钟获取一次微打赏数据，如果有新的集资评论，自动发送到群。
+#定时任务。每3分钟获取一次微打赏数据，如果有新的集资评论，自动发送到群。
 #可修改定时任务时间来提高查询频率，其他无需修改
-@qqbotsched(hour='0-23', minute='0-59/5')
+@qqbotsched(hour='0-23', minute='0-59/3')
 def mytask(bot):
 	global commentNum
 	global firstcheck
@@ -145,10 +145,21 @@ def return_comment(difference):
 	        c_userinfo = data['c_userinfo']
 	        comment.append((c_userinfo['nickname'] , data['pay_amount']))
 	    form['pageNum'] += 1
+	#20170913update
+	#增加了微打赏项目中的只评论无集资情况（如评论中出现垃圾广告）判断
+	#只评论空集资导致集资额comment[i][1]返回null，无法转为float
 	for i in range(0, int(difference)):
-		result = result + "ID: " + str(comment[i][0]) + " 的聚聚刚刚在【" + wds_name + "】中支持了 ¥" + str(comment[i][1]) + '\n' + "感谢这位聚聚对黄子璇的支持" + '\n'
+	    try:
+	        try_supmoney = float(comment[i][1])
+	    except Exception as e:
+	        result = result + "微打赏被ID为：" + str(comment[i][0]) + " 的聚聚评论了" + '\n'
+	    else:
+	        result = result + "ID: " + str(comment[i][0]) + " 的聚聚刚刚在【" + wds_name + "】中支持了 ¥" + str(comment[i][1]) + '\n' + "感谢这位聚聚对黄子璇的支持" + '\n'
 	for j in comment:
-		total += float(j[1])
+	    try:
+	        total += float(j[1])
+	    except Exception as e:
+	        pass
 	result = result + "【微打赏】：" + wds_url + '\n' + "目前集资总额：¥" + str(total)
 	return result
 

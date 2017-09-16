@@ -1,18 +1,33 @@
 # qqbot_hzx
-基于qqbot的QQ微打赏机器人(BEJ48-黄子璇)</br></br>
-本项目是一个插件，依赖于: [pandolia/qqbot](https://github.com/pandolia/qqbot) </br></br>
+基于qqbot的QQ微打赏机器人(BEJ48-黄子璇)
+
+
+本项目是一个插件，依赖于: [pandolia/qqbot](https://github.com/pandolia/qqbot) 
+
+
 环境：`Python 2.7/3.4+ `&`requests`
 
+
+
   ##  更新
+2017.09.16更新：增加了口袋48监控功能（直播+聚聚房间） 借鉴了 [billjyc/pocket48](https://github.com/billjyc/pocket48)
+
+
 2017.09.08更新：增加了微博监控功能 借鉴了 [PYF0311/wds_Crawler](https://github.com/PYF0311/wds_Crawler)
 
   ## 介绍
 `start.py`  启动文件，包含关键字回复和定时任务</br>
 `wds.py`  返回集资名和集资链接</br>
 `wds20.py`  返回集资榜TOP20</br>
-`link.py`  修改集资名、集资链接等参数</br>
+`link.py`  修改集资名、集资链接等参数;口袋48相关参数
+
+
 2017.09.08新增:</br>
-`weibo.py`  返回新浪微博相关参数</br>
+`weibo.py`  返回新浪微博相关参数
+
+
+2017.09.16新增:</br>
+`koudai48.py` 启动文件2，包含口袋48查询的定时任务
 
   ##  安装和配置
   1.[qqbot安装](https://github.com/pandolia/qqbot#二安装方法):`pip install qqbot`
@@ -20,9 +35,9 @@
   2.运行一次qqbot：终端输入`qqbot`，运行，然后退出。
   
   3.[插件配置](https://github.com/pandolia/qqbot#插件的配置-pluginpath-和-plugins-):
-  将`qqbot_hzx/`下四个文件拷贝至` ~/.qqbot-tmp/plugins`
+  将`qqbot_hzx/`下7个文件拷贝至` ~/.qqbot-tmp/plugins`
   
-  4.[修改配置文件](https://github.com/pandolia/qqbot#配置文件的使用方法)，在终端输入`qqbot -u somebody`来运行
+  4.[修改配置文件](https://github.com/pandolia/qqbot#配置文件的使用方法)，将`start.py`以及`koudai48.py`添加到需要加载的插件列表。在终端输入`qqbot -u somebody`来运行
   
   5.详细信息请阅读[qqbot说明文档](https://github.com/pandolia/qqbot/blob/master/README.MD)
 
@@ -41,6 +56,7 @@
     * `wds_url` 微打赏链接
     * `moxi_id` 微打赏moxi_id
     * `pro_id`  微打赏pro_id
+
 
     ### moxi_id&pro_id 查询方法（chrome为例）
     1.打开新标签页，右键“检查”，弹出界面
@@ -63,3 +79,13 @@
     * `pro_id`
 
 设置方法可参考[nikochan.cc](http://www.nikochan.cc/2017/08/03/Crawlerweibonotloggin/)
+
+
+2017.09.16新增:
+
+
+通过`link.py`：
+* 设置口袋48相关参数（抓包）
+  * `roomId`
+  * `memberId`
+

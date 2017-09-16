@@ -23,3 +23,26 @@ def pro_id():
 	pro_id = 7371
 	return (pro_id)
 	pass
+
+#以下均为口袋48相关参数设置
+#抓包得到
+#可以联系我代为抓取id
+#口袋48:memberId
+#黄子璇id:528331
+def memberId():
+	memberId = 528331
+	return (memberId)
+	pass
+
+#口袋48:roomId
+#黄子璇roomId：9108720
+def roomId():
+	roomId = 9108720
+	return (roomId)
+	pass
+
+#口袋48:小偶像名字
+def idol_name():
+	idol_name = "黄子璇"
+	return (idol_name)
+	pass

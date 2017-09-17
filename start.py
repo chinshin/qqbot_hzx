@@ -154,7 +154,7 @@ def return_comment(difference):
 	    except Exception as e:
 	        result = result + "微打赏被ID为：" + str(comment[i][0]) + " 的聚聚评论了" + '\n'
 	    else:
-	        result = result + "ID: " + str(comment[i][0]) + " 的聚聚刚刚在【" + wds_name + "】中支持了 ¥" + str(comment[i][1]) + '\n' + "感谢这位聚聚对黄子璇的支持" + '\n'
+	        result = result + "ID: " + str(comment[i][0]) + " 的聚聚刚刚在【" + wds_name + "】中支持了 ¥" + str(comment[i][1]) + '\n' + "感谢这位聚聚对" + link.idol_name() + "的支持" + '\n'
 	for j in comment:
 	    try:
 	        total += float(j[1])

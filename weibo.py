@@ -2,6 +2,7 @@
 import requests
 import math
 import json
+import dr2dd
 import sys
 
 reload(sys)
@@ -37,11 +38,19 @@ def checkretweet():
 
 def getweibo():
 	datas = getdata()
-	return str(datas['mblog']['text'])
+	r_weibo = str(datas['mblog']['text'])
+	#20170917增加
+	#微博内容去除html标记功能
+	r2d_weibo = dr2dd.dr_to_dd(r_weibo)
+	return r2d_weibo
 
 def getretweetweibo():
 	datas = getdata()
-	return str(datas['mblog']['raw_text'])
+	r_retweeetweibo = str(datas['mblog']['raw_text'])
+	#20170917增加
+	#微博内容去除html标记功能
+	r2d_retweeetweibo = dr2dd.dr_to_dd(r_retweeetweibo)
+	return r2d_retweeetweibo
 
 def checkpic():
 	datas = getdata()
@@ -55,10 +64,33 @@ def getpic():
 	picurl = ""
 	picnum = 1
 	for pic in datas['mblog']['pics']:
-		picurl = picurl + "微博配图" + str(picnum) + "：" +  str(pic['url']) + '\n'
-		picnum += 1
+	    picurl = picurl + "微博配图" + str(picnum) + "：" +  str(pic['url']) + '\n'
+	    picnum += 1
 	return picurl
 
 def getscheme():
 	datas = getdata()
 	return str(datas['scheme'])
+
+def getidarray():
+	weibo_id_array = []
+	ajax_url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value=6212622903&containerid=1076036212622903'
+	header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'}
+	form = {
+	    'type': 'uid',
+	    'value': 6212622903,
+	    'pro_id': 1076036212622903
+	}
+	response = requests.post(ajax_url, form, headers=header).json()
+	cards = response['cards']
+	for card in cards:
+	    try:
+	        weibo_id = card['mblog']['id']
+	    except Exception as e:
+	        continue
+	    else:
+	        weibo_id_array.append(weibo_id)
+	return weibo_id_array
+
+
+

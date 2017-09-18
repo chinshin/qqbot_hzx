@@ -7,14 +7,15 @@ import requests
 import math
 import json
 import weibo
+import copy
 
 global commentNum
 global firstcheck
 
-global weiboid
+global weibo_id_array
 global firstcheck_weibo
 
-weiboid = ""
+weibo_id_array = []
 firstcheck_weibo = 1
 
 commentNum = 0
@@ -48,18 +49,18 @@ def onQQMessage(bot, contact, member, content):
 #可修改定时任务时间来提高查询频率，其他无需修改
 @qqbotsched(hour='0-23', minute='0-59/3')
 def mytask3(bot):
-	global weiboid
+	global weibo_id_array
 	global firstcheck_weibo
 	wbcontent = ""
 	gl = bot.List('group', '606642799')
 	if gl is not None:
 	    for group in gl:
 	        if (firstcheck_weibo == 1):
-	            weiboid = weibo.checkid()
+	            weibo_id_array = copy.copy(weibo.getidarray())
 	            firstcheck_weibo = 0
 	        checkwbid = weibo.checkid()
-	        if (weiboid != checkwbid):
-	            weiboid = checkwbid
+	        if checkwbid not in weibo_id_array:
+	            weibo_id_array.append(checkwbid)
 	            retweet = weibo.checkretweet()
 	            wbpic = weibo.checkpic()
 	            wbscheme = weibo.getscheme()

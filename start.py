@@ -47,7 +47,7 @@ def onQQMessage(bot, contact, member, content):
 
 #定时任务。每五分钟获取一次微博数据，如果有新的微博，自动发送到群。
 #可修改定时任务时间来提高查询频率，其他无需修改
-@qqbotsched(hour='0-23', minute='0-59/3')
+@qqbotsched(hour='0-23', minute='0-59/5')
 def mytask3(bot):
 	global weibo_id_array
 	global firstcheck_weibo
@@ -55,27 +55,32 @@ def mytask3(bot):
 	gl = bot.List('group', '606642799')
 	if gl is not None:
 	    for group in gl:
+	        idcount = -1
 	        if (firstcheck_weibo == 1):
 	            weibo_id_array = copy.copy(weibo.getidarray())
 	            firstcheck_weibo = 0
-	        checkwbid = weibo.checkid()
-	        if checkwbid not in weibo_id_array:
-	            weibo_id_array.append(checkwbid)
-	            retweet = weibo.checkretweet()
-	            wbpic = weibo.checkpic()
-	            wbscheme = weibo.getscheme()
-	            if (retweet):
-	                wbcontent = "小偶像刚刚[转发]了一条微博：" + '\n' + '\n' + weibo.getretweetweibo() + '\n'
-	                wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
-	            else:
-	                wbcontent = "小偶像刚刚发了一条新微博：" + '\n' + '\n' + weibo.getweibo() + '\n'
-	                if (wbpic):
-	                    wbcontent = wbcontent + weibo.getpic()
-	                wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
-	            bot.SendTo(group, wbcontent)
+	        checkwbid = copy.copy(weibo.get_3_idarray())
+	        for cardid in checkwbid:
+	            idcount += 1
+	            if int(cardid) == 0:
+	                continue
+	            if cardid not in weibo_id_array:
+	                weibo_id_array.append(cardid)
+	                retweet = weibo.checkretweet(idcount)
+	                wbpic = weibo.checkpic(idcount)
+	                wbscheme = weibo.getscheme(idcount)
+	                if (retweet):
+	                    wbcontent = "小偶像刚刚[转发]了一条微博：" + '\n' + '\n' + weibo.getretweetweibo(idcount) + '\n'
+	                    wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
+	                else:
+	                    wbcontent = "小偶像刚刚发了一条新微博：" + '\n' + '\n' + weibo.getweibo(idcount) + '\n'
+	                    if (wbpic):
+	                        wbcontent = wbcontent + weibo.getpic(idcount)
+	                    wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
+	                bot.SendTo(group, wbcontent)
 
 #定时任务。qqbot每天定时重启前的提醒。
-@qqbotsched(hour='22', minute='28')
+@qqbotsched(hour='7', minute='58')
 def mytask2(bot):
 	gl = bot.List('group', '606642799')
 	if gl is not None:

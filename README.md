@@ -10,6 +10,10 @@
 
 
   ##  更新
+  
+2017.09.18更新：新增`dr2dd.py`，现在`weibo.py`可以返回无html标签的微博内容了；改进了新微博识别方法，现在删微博后，旧微博不会被播报出来。
+
+
 2017.09.16更新：增加了口袋48监控功能（直播+聚聚房间） 借鉴了 [billjyc/pocket48](https://github.com/billjyc/pocket48)
 
 
@@ -28,6 +32,10 @@
 
 2017.09.16新增:</br>
 `koudai48.py` 启动文件2，包含口袋48查询的定时任务
+
+
+2017.09.18新增:</br>
+`dr2dd.py`  消去字符串中html标签
 
   ##  安装和配置
   1.[qqbot安装](https://github.com/pandolia/qqbot#二安装方法):`pip install qqbot`

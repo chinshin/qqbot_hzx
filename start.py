@@ -58,24 +58,25 @@ def mytask3(bot):
 	            weibo_id_array = copy.copy(weibo.getidarray())
 	            firstcheck_weibo = 0
 	        checkwbid = copy.copy(weibo.get_3_idarray())
-	        for cardid in checkwbid:
-	            idcount += 1
-	            if int(cardid) == 0:
-	                continue
-	            if cardid not in weibo_id_array:
-	                weibo_id_array.append(cardid)
-	                retweet = weibo.checkretweet(idcount)
-	                wbpic = weibo.checkpic(idcount)
-	                wbscheme = weibo.getscheme(idcount)
-	                if (retweet):
-	                    wbcontent = "小偶像刚刚[转发]了一条微博：" + '\n' + '\n' + weibo.getretweetweibo(idcount) + '\n'
-	                    wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
-	                else:
-	                    wbcontent = "小偶像刚刚发了一条新微博：" + '\n' + '\n' + weibo.getweibo(idcount) + '\n'
-	                    if (wbpic):
-	                        wbcontent = wbcontent + weibo.getpic(idcount)
-	                    wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
-	                bot.SendTo(group, wbcontent)
+	        if (firstcheck_weibo == 0):
+	            for cardid in checkwbid:
+	                idcount += 1
+	                if int(cardid) == 0:
+	                    continue
+	                if cardid not in weibo_id_array:
+	                    weibo_id_array.append(cardid)
+	                    retweet = weibo.checkretweet(idcount)
+	                    wbpic = weibo.checkpic(idcount)
+	                    wbscheme = weibo.getscheme(idcount)
+	                    if (retweet):
+	                        wbcontent = "小偶像刚刚[转发]了一条微博：" + '\n' + '\n' + weibo.getretweetweibo(idcount) + '\n'
+	                        wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
+	                    else:
+	                        wbcontent = "小偶像刚刚发了一条新微博：" + '\n' + '\n' + weibo.getweibo(idcount) + '\n'
+	                        if (wbpic):
+	                            wbcontent = wbcontent + weibo.getpic(idcount)
+	                        wbcontent = wbcontent + '\n' + "传送门：" + wbscheme
+	                    bot.SendTo(group, wbcontent)
 
 #定时任务。qqbot每天定时重启前的提醒。
 @qqbotsched(hour='7', minute='58')

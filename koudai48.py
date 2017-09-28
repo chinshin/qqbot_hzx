@@ -80,7 +80,7 @@ def get_live(bot):
 	                        message += "小偶像【%s】开视频直播啦 \n %s \n 开始时间：%s \n 直播地址：%s" % (link.idol_name(), live_title, live_starttime, live_url)
 	                    if live_type == 2:
 	                        message += "小偶像【%s】开电台啦 \n %s \n 开始时间：%s \n 电台地址：%s" % (link.idol_name(), live_title, live_starttime, live_url)
-	                bot.SendTo(group, message)
+	                    bot.SendTo(group, message)
 	    
 
 
@@ -145,5 +145,6 @@ def get_juju(bot):
 	                #print "语音消息"
 	                if 'url' in bodys.keys():
 	                    jujumsg = ('[%s]\n【口袋48房间语音】\n %s：%s\n' % (data['msgTimeStr'], extInfo['senderName'], bodys['url'])) + jujumsg
-	        bot.SendTo(group, jujumsg)
+	        if jujumsg != "":
+	        	bot.SendTo(group, jujumsg)
 	    

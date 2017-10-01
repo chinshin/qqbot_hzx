@@ -57,7 +57,7 @@ def mytask3(bot):
 	        if (firstcheck_weibo == 1):
 	            weibo_id_array = copy.copy(weibo.getidarray())
 	            firstcheck_weibo = 0
-	        checkwbid = copy.copy(weibo.get_3_idarray())
+	        checkwbid = copy.copy(weibo.get_5_idarray())
 	        if (firstcheck_weibo == 0):
 	            for cardid in checkwbid:
 	                idcount += 1

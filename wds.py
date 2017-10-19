@@ -60,12 +60,12 @@ def return_comment(difference):
 	    form['page'] += 1
 	    #对字典中返回的html进行正则匹配
 	    #针对空评论无集资进行了优化
-	    res_nick = r"""<span class="nick">(.*?)</span>.*?<div class="comment">.*?(<span class="nick_sup">.*?([0-9]+\.[0-9]+?|[0-9]+?).*?|<span>(.*?))</span>.*?</div>"""
+	    res_nick = r"""<span class="nick">(.*?)</span>.*?<div class="comment">.*?(<span class="nick_sup">.*?([0-9]+\,[0-9]+\.[0-9]+|[0-9]+\.[0-9]+|[0-9]+).*?|<span>(.*?))</span>.*?</div>"""
 	    m_nick = re.findall(res_nick, html, re.S)
 	    comment += m_nick
 	for cmt in comment:
 		#des为包含（支持者名称，支持的金额）的序列
-	    des.append((cmt[0], cmt[2]))
+	    des.append((cmt[0], cmt[2].replace(',','')))
 
 	for i in range(0, int(difference)):
 	    try:

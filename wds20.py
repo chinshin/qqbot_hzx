@@ -36,13 +36,13 @@ def start():
 	    html = response['data']['html']
 	    form['page'] += 1
 	    #正则匹配
-	    res_rank = r"""<span class="suport_ran">(.*?)</span>.*?<span class="nickname">(.*?)</span>.*?<span class="money">.*?([0-9]+\.[0-9]{2}?).*?</span>"""
+	    res_rank = r"""<span class="suport_ran">(.*?)</span>.*?<span class="nickname">(.*?)</span>.*?<span class="money">.*?([0-9]+\,[0-9]+\.[0-9]+|[0-9]+\.[0-9]+).*?</span>"""
 	    m_rank = re.findall(res_rank, html, re.S)
 	    rank += m_rank
 	for i in rank:
 	    if no <21:
 	        result = result + "【第" + str(no) + "名】ID：" + str(i[1]) + " 支持了" + str(i[2]) + "元" + '\n'
 	    no += 1
-	    total += float(i[2])
+	    total += float(i[2].replace(',',''))
 	result = result + "【微打赏】：" + link.wds_url() + '\n' + "目前集资总额：¥" + str(total)
 	return result

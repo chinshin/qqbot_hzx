@@ -30,7 +30,8 @@ header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWe
 #获取comment数量
 def checkNum():
 	#获取wds项目页面
-	content = requests.get('https://wds.modian.com/show_weidashang_pro/7771', headers = header).text
+	wds_url = 'https://wds.modian.com/show_weidashang_pro/%d' % (link.pro_id())
+	content = requests.get(wds_url, headers = header).text
 	#正则匹配评论总数
 	res_div = r'<div class="project-comment".*?>.*?<div class="s-t line1px">.*?<span>(.*?)</span>' 
 	m_span =  re.findall(res_div,content,re.S)

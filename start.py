@@ -96,75 +96,78 @@ def mytask(bot):
 	gl = bot.List('group', '606642799')
 	if gl is not None:
 	    for group in gl:
-	        commentNum_new = checkNum()
+	        commentNum_new = wds.checkNum()
 	        if (firstcheck == 1):
 	            commentNum = commentNum_new
 	            firstcheck = 0
 	        difference = commentNum_new - commentNum
 	        if (difference):
 	            commentNum = commentNum_new
-	            bot.SendTo(group,return_comment(difference))
+	            bot.SendTo(group, wds.return_comment(difference))
 
-def checkNum():
-	ajax_url = 'https://wds.modian.com/ajax_comment'
-	header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'}
 
-	form = {
-	    'pageNum': 1,
-	    'moxi_id': link.moxi_id(),
-	    'pro_id': link.pro_id()
-	}
-	comment = []
-	while True:
-	    response = requests.post(ajax_url, form, headers=header).json()
-	    if response['status'] == '-1':
-	        break
-	    datas = response['des']
-	    for data in datas:
-	        c_userinfo = data['c_userinfo']
-	        comment.append((c_userinfo['nickname'] , data['pay_amount']))
-	    form['pageNum'] += 1
-	num = int(len(comment))
-	return num
-
-def return_comment(difference):
-	wds_name = link.wds_name()
-	wds_url = link.wds_url()
-	ajax_url = 'https://wds.modian.com/ajax_comment'
-	header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'}
-
-	form = {
-	    'pageNum': 1,
-	    'moxi_id': link.moxi_id(),
-	    'pro_id': link.pro_id()
-	}
-	comment = []
-	result = ""
-	total = 0.0
-	while True:
-	    response = requests.post(ajax_url, form, headers=header).json()
-	    if response['status'] == '-1':
-	        break
-	    datas = response['des']
-	    for data in datas:
-	        c_userinfo = data['c_userinfo']
-	        comment.append((c_userinfo['nickname'] , data['pay_amount']))
-	    form['pageNum'] += 1
-	#20170913update
-	#增加了微打赏项目中的只评论无集资情况（如评论中出现垃圾广告）判断
-	#只评论空集资导致集资额comment[i][1]返回null，无法转为float
-	for i in range(0, int(difference)):
-	    try:
-	        try_supmoney = float(comment[i][1])
-	    except Exception as e:
-	        result = result + "微打赏被ID为：" + str(comment[i][0]) + " 的聚聚评论了" + '\n'
-	    else:
-	        result = result + "ID: " + str(comment[i][0]) + " 的聚聚刚刚在【" + wds_name + "】中支持了 ¥" + str(comment[i][1]) + '\n' + "感谢这位聚聚对" + link.idol_name() + "的支持" + '\n'
-	for j in comment:
-	    try:
-	        total += float(j[1])
-	    except Exception as e:
-	        pass
-	result = result + "【微打赏】：" + wds_url + '\n' + "目前集资总额：¥" + str(total)
-	return result
+#
+#以下在20171019改版后已无效，wds功能整合至wds.py
+#def checkNum():
+#	ajax_url = 'https://wds.modian.com/ajax_comment'
+#	header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'}
+#
+#	form = {
+#	    'pageNum': 1,
+#	    'moxi_id': link.moxi_id(),
+#	    'pro_id': link.pro_id()
+#	}
+#	comment = []
+#	while True:
+#	    response = requests.post(ajax_url, form, headers=header).json()
+#	    if response['status'] == '-1':
+#	        break
+#	    datas = response['des']
+#	    for data in datas:
+#	        c_userinfo = data['c_userinfo']
+#	        comment.append((c_userinfo['nickname'] , data['pay_amount']))
+#	    form['pageNum'] += 1
+#	num = int(len(comment))
+#	return num
+#
+#def return_comment(difference):
+#	wds_name = link.wds_name()
+#	wds_url = link.wds_url()
+#	ajax_url = 'https://wds.modian.com/ajax_comment'
+#	header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'}
+#
+#	form = {
+#	    'pageNum': 1,
+#	    'moxi_id': link.moxi_id(),
+#	    'pro_id': link.pro_id()
+#	}
+#	comment = []
+#	result = ""
+#	total = 0.0
+#	while True:
+#	    response = requests.post(ajax_url, form, headers=header).json()
+#	    if response['status'] == '-1':
+#	        break
+#	    datas = response['des']
+#	    for data in datas:
+#	        c_userinfo = data['c_userinfo']
+#	        comment.append((c_userinfo['nickname'] , data['pay_amount']))
+#	    form['pageNum'] += 1
+#	#20170913update
+#	#增加了微打赏项目中的只评论无集资情况（如评论中出现垃圾广告）判断
+#	#只评论空集资导致集资额comment[i][1]返回null，无法转为float
+#	for i in range(0, int(difference)):
+#	    try:
+#	        try_supmoney = float(comment[i][1])
+#	    except Exception as e:
+#	        result = result + "微打赏被ID为：" + str(comment[i][0]) + " 的聚聚评论了" + '\n'
+#	    else:
+#	        result = result + "ID: " + str(comment[i][0]) + " 的聚聚刚刚在【" + wds_name + "】中支持了 ¥" + str(comment[i][1]) + '\n' + "感谢这位聚聚对" + link.idol_name() + "的支持" + '\n'
+#	for j in comment:
+#	    try:
+#	        total += float(j[1])
+#	    except Exception as e:
+#	        pass
+#	result = result + "【微打赏】：" + wds_url + '\n' + "目前集资总额：¥" + str(total)
+#	return result
 

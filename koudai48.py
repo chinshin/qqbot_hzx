@@ -8,6 +8,8 @@ import time
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 global global_live_id
 global msgidClient_array
@@ -106,7 +108,7 @@ def get_juju(bot):
 	            'Accept-Encoding' : 'gzip, deflate',
 	            'Accept-Language' : 'zh-Hans-CN;q=1, ja-JP;q=0.9, zh-Hant-CN;q=0.8',
 	            'imei'  :  '910FDAF8-E600-4ECD-A46F-7EFBACD1E5B6',
-	            'token'  :  '1gJprYYthZJR0Jv9lMKvvGpqeUpcscwzTSnrDthdqt57VJ/ZXhvi/Lq8hvJQ2/fUVqxq/ZDF/Dd2vMWuBlMO3/n3fRYliMBk',
+	            'token'  :  'P/hpQYRzkOhADoMEAlmsGdR8B1FCe/sbxKWYjecYR43SLYbrYXiobEwwBqxr3K4Ff3Rf6rRx9JdePMFBK/OHmWKF9d6UFZIp',
 	            'User-Agent' : 'Mobile_Pocket',
 	            'Content-Length' : '85',
 	            'Connection' : 'keep-alive',

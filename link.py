@@ -13,9 +13,10 @@ def wds_url():
 	pass
 
 #微打赏项目对应moxi_id
-def moxi_id():
-	moxi_id = 16655
-	return (moxi_id)
+#20171019 改为post_id
+def post_id():
+	post_id = 16655
+	return (post_id)
 	pass
 
 #微打赏项目对应pro_id

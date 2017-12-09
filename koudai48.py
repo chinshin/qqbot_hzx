@@ -108,7 +108,7 @@ def get_juju(bot):
 	            'Accept-Encoding' : 'gzip, deflate',
 	            'Accept-Language' : 'zh-Hans-CN;q=1, ja-JP;q=0.9, zh-Hant-CN;q=0.8',
 	            'imei'  :  '910FDAF8-E600-4ECD-A46F-7EFBACD1E5B6',
-	            'token'  :  'P/hpQYRzkOhADoMEAlmsGdR8B1FCe/sbxKWYjecYR43SLYbrYXiobEwwBqxr3K4Ff3Rf6rRx9JdePMFBK/OHmWKF9d6UFZIp',
+	            'token'  :  'Lyiok5pLidlR0Jv9lMKvvGpqeUpcscwzTSnrDthdqt57VJ/ZXhvi/Lq8hvJQ2/fUEKiDIp4dqHscVozFazCDW1m/xCNI+t20',
 	            'User-Agent' : 'Mobile_Pocket',
 	            'Content-Length' : '85',
 	            'Connection' : 'keep-alive',

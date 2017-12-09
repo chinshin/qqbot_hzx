@@ -2,26 +2,26 @@
 
 #微打赏名称
 def wds_name():
-	wds_name = "BEJ48-黄子璇二十场集资"
+	wds_name = "BEJ48－黄子璇第四届金曲大赏"
 	return (wds_name)
 	pass
 
 #微打赏网址 建议使用短地址t.cn
 def wds_url():
-	wds_url = "http://t.cn/R0Xc0YZ"
+	wds_url = "http://t.cn/RWsUu8v"
 	return (wds_url)
 	pass
 
 #微打赏项目对应moxi_id
 #20171019 改为post_id
 def post_id():
-	post_id = 16655
+	post_id = 18267
 	return (post_id)
 	pass
 
 #微打赏项目对应pro_id
 def pro_id():
-	pro_id = 7771
+	pro_id = 8764
 	return (pro_id)
 	pass
 

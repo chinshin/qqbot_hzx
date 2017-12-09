@@ -25,7 +25,7 @@ def init():
 
 def getdata(i):
 	response = copy.copy(init())
-	datas = response['cards'][i]
+	datas = response['data']['cards'][i]
 	return datas
 
 
@@ -79,7 +79,7 @@ def getscheme(i):
 def getidarray():
 	weibo_id_array = []
 	response = copy.copy(init())
-	cards = response['cards']
+	cards = response['data']['cards']
 	for card in cards:
 	    try:
 	        weibo_id = card['mblog']['id']
@@ -94,7 +94,7 @@ def getidarray():
 def get_5_idarray():
 	weibo_id_array = []
 	response = copy.copy(init())
-	cards = response['cards']
+	cards = response['data']['cards']
 	for i in range(0,5):
 	    datas = cards[i]
 	    try:

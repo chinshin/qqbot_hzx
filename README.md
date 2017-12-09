@@ -10,7 +10,10 @@
 
 
   ##  更新
-  
+
+2017.12.09更新：针对微博（m.weibo.com）返回数据格式改动作出更新
+
+
 2017.10.19更新：针对微打赏网站数据改版进行了查询方法的更新，并将start.py中微打赏查询方法移动到了`wds.py`中。(tip：查询方法中的请求地址、form格式及参数、返回的数据均有变化)
 
 
@@ -51,6 +54,11 @@
   4.[修改配置文件](https://github.com/pandolia/qqbot#配置文件的使用方法)，将`start.py`以及`koudai48.py`添加到需要加载的插件列表。在终端输入`qqbot -u somebody`来运行
   
   5.详细信息请阅读[qqbot说明文档](https://github.com/pandolia/qqbot/blob/master/README.MD)
+  
+ 6.[koudai48.py](https://github.com/chinshin/qqbot_hzx/blob/a2a810deeb91c20df5edfc0fa32590057e786027/koudai48.py#L111)中的token需手动设置，存活期为29天。
+
+
+
 
   ##  功能
 通过`start.py`：</br>
@@ -67,7 +75,13 @@
     * `wds_url` 微打赏链接
     * `moxi_id` 微打赏moxi_id
     * `pro_id`  微打赏pro_id
-    * 注意！20171019微打赏改版后`moxi_id`变更为`post_id`
+
+
+* 注意！20171019微打赏改版后`moxi_id`变更为`post_id`
+
+
+
+
 
 
     ### moxi_id&pro_id 查询方法（chrome为例）

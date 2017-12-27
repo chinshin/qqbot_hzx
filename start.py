@@ -26,7 +26,7 @@ def onQQMessage(bot, contact, member, content):
         jz = ''
         jz = jz + setting.wds_name() + '\n' + setting.wds_url()
         bot.SendTo(contact, str(jz))
-    elif content == 'wds20' or content == 'jz20' or content == 'rank' or content == '聚聚榜' or content == 'jzb':
+    elif content == 'wds20' or content == 'jz20' or content == 'rank' or content == '聚聚榜' or content == 'jzb' or content == '集资榜':
         bot.SendTo(contact, modian.rank(1))
     elif content == 'dkb' or content == '打卡榜' or content == 'dk20' or content == 'dakabang':
         bot.SendTo(contact, modian.rank(2))
@@ -40,18 +40,11 @@ def onQQMessage(bot, contact, member, content):
         duojiaoyutou = "我们都爱剁椒鱼头"
         bot.SendTo(contact, duojiaoyutou)
     elif content == "欢迎新人":
-        welcome = "欢迎聚聚加入BEJ48-黄子璇的应援群！" + '\n' + "大家可以叫子璇宝宝叁玖 ~" + '\n' +\
-            "叁玖是一只土生土长的北京姑娘，生日是5月20日，生在2002年的金牛座。" + '\n' + "九春三秋，只为遇见你。" +\
-            '\n' + "希望你我可以相知相识～" + '\n' + '\n' + "三分钟带你领略甜甜的叁玖" + '\n' +\
-            "首演unit《爱的魔法》：http://t.cn/RolMikW" + '\n' + '\n' +\
-            "出道以来第五场公演unit《爱的魔法》：http://t.cn/RCb8QBn" + '\n' + '\n' +\
-            "第四届总决选拉票公演：http://t.cn/RCb8gzH" + '\n' + '\n' +\
-            "更多补档内容请戳b站：BEJ48-黄子璇应援会 http://t.cn/RCbRLjZ" + '\n' + '\n' +\
-            "最后也请聚聚关注下叁玖的微博与超级话题吧" + '\n' + "@BEJ48-黄子璇：http://t.cn/RCbRiAe" +\
-            '\n' + "@BEJ48-黄子璇应援会：http://t.cn/RCbRNu1" + '\n' +\
-            "#黄子璇#超级话题：http://t.cn/RCbRQg2" + '\n' + '\n' +\
-            "让我们陪着这个刚出道不久的小孩子长大，看着她成为更好的人，一起给她最好的应援吧~（鞠躬）"
+        welcome = setting.welcome()
         bot.SendTo(contact, welcome)
+    elif content == "help":
+        help = '''废物机器人口令帮助：\n“集资”或“打卡”：返回集资地址"\n“集资榜”或“jzb”：返回集资金额榜单\n“打卡榜”或“dkb”：返回打卡天数榜单\n“想39”：返回B站应援会主页\n“欢迎新人”：返回欢迎信息\n更多功能敬请期待'''
+        bot.SendTo(contact, help)
 
 
 # 定时任务。每五分钟获取一次微博数据，如果有新的微博，自动发送到群。

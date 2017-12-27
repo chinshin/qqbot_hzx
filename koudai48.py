@@ -4,18 +4,17 @@ import json
 import time
 import sys
 import setting
-import urllib3
+from qqbot.utf8logger import WARN
 import requests
+import urllib3
 reload(sys)
 sys.setdefaultencoding('utf8')
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-global global_live_id
-global msgidClient_array
+global msgTime_array
 global firstcheck_juju
 
-global_live_id = "59bbfc740cf20e50ac3874d0"
-msgidClient_array = []
+msgTime_array = []
 firstcheck_juju = 0
 groupid = setting.groupid()
 
@@ -28,99 +27,33 @@ def stamp_to_str(timestamp):
 
 
 # 定时任务，每分钟执行一次
-# 查询口袋48直播
-# 成员id及小偶像name在setting.py中设置
-@qqbotsched(hour='0-23', minute='0-59')
-def get_live(bot):
-    global global_live_id
-    # 仅需修改播报的qq群号
-    gl = bot.List('group', groupid)
-    if gl is not None:
-        for group in gl:
-            ajax_url = 'https://plive.48.cn/livesystem/api/live/v1/memberLivePage'
-            header = {
-                'Host': 'plive.48.cn',
-                'app-type': 'fans',
-                'Accept': '*/*',
-                'version':'4.1.8',
-                'os': 'ios',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'zh-Hans-CN;q=1, ja-JP;q=0.9, zh-Hant-CN;q=0.8',
-                'imei':  '910FDAF8-E600-4ECD-A46F-7EFBACD1E5B6',
-                'User-Agent': 'Mobile_Pocket',
-                'Content-Length': '106',
-                'Connection': 'keep-alive',
-                'Content-Type':  'application/json;charset=utf-8'
-            }
-            form = {
-                "type": 0,
-                "limit": 20,
-                "giftUpdTime": 1503766100000,
-                "memberId": 0,
-                "groupId": 0,
-                "lastTime": 0
-            }
-            try:
-                response = requests.post(
-                        ajax_url,
-                        data=json.dumps(form),
-                        headers=header,
-                        verify=False
-                )
-            except Exception as e:
-                raise e
-                # print "获取直播列表失败"
-            res_json = response.json()
-            if 'liveList' in res_json['content'].keys():
-                live_list = res_json['content']['liveList']
-                # print "有直播 \n 当前直播人数：%d" % len(live_list)
-                message = ""
-                for live in live_list:
-                    live_id = str(live['liveId'])
-                    if int(live['memberId']) == setting.memberId() and global_live_id != live_id:
-                        global_live_id = live_id
-                        live_starttime = stamp_to_str(live['startTime'])
-                        live_streampath = str(live['streamPath'])
-                        live_title = str(live['subTitle'])
-                        live_type = int(live['liveType'])
-                        live_url = 'https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=%s' % str(live_id)
-                        if live_type == 1:
-                            message += "小偶像【%s】开视频直播啦 \n %s \n 开始时间：%s \n 直播地址：%s" % (setting.idol_name(), live_title, live_starttime, live_url)
-                        if live_type == 2:
-                            message += "小偶像【%s】开电台啦 \n %s \n 开始时间：%s \n 电台地址：%s" % (setting.idol_name(), live_title, live_starttime, live_url)
-                        bot.SendTo(group, message)
-
-
-# 定时任务，每分钟执行一次
 # 查询聚聚房间
 # 房间id在setting.py中设置
 @qqbotsched(hour='0-23', minute='0-59')
 def get_juju(bot):
-    global msgidClient_array
+    global msgTime_array
     global firstcheck_juju
     # 仅需修改播报的qq群号
     gl = bot.List('group', groupid)
     if gl is not None:
         for group in gl:
-            ajax_url = 'https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/chat'
+            ajax_url = 'https://pjuju.48.cn/imsystem/api/im/v1/member/room/message/mainpage'
             header = {
                 'Host': 'pjuju.48.cn',
-                'app-type': 'fans',
-                'Accept': '*/*',
-                'version': '4.1.8',
-                'os': 'ios',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'zh-Hans-CN;q=1, ja-JP;q=0.9, zh-Hant-CN;q=0.8',
-                'imei':  '910FDAF8-E600-4ECD-A46F-7EFBACD1E5B6',
-                'token':  setting.token(),
+                'version': '5.0.1',
+                'os': 'android',
+                'Accept-Encoding': 'gzip',
+                'IMEI': '866716037825810',
                 'User-Agent': 'Mobile_Pocket',
-                'Content-Length': '85',
-                'Connection': 'keep-alive',
-                'Content-Type':  'application/json;charset=utf-8'
+                'Content-Length': '67',
+                'Connection': 'Keep-Alive',
+                'Content-Type': 'application/json;charset=utf-8',
+                'token': setting.token()
             }
             form = {
                 "lastTime": 0,
                 "limit": 10,
+                "chatType": 0,
                 "roomId": setting.roomId()
             }
             response = requests.post(
@@ -129,32 +62,59 @@ def get_juju(bot):
                 headers=header,
                 verify=False
             ).json()
-            datas = response['content']['data']
-            jujumsg = ""
-            if firstcheck_juju == 0:
+            if response['status'] == 200:
+                datas = response['content']['data']
+                # first check
+                if firstcheck_juju == 0:
+                    for data in datas:
+                        msgTime_array.append(data['msgTime'])
+                    firstcheck_juju = 1
+                #
+                # 控制list长度
+                msgTime_array = msgTime_array[-10:]
+                #
                 for data in datas:
-                    msgidClient_array.append(data['msgidClient'])
-                firstcheck_juju = 1
-            for data in datas:
-                if data['msgidClient'] in msgidClient_array:
-                    continue
-                msgidClient_array.append(data['msgidClient'])
-                extInfo = json.loads(data['extInfo'])
-                if data['msgType'] == 0:
-                    if 'text' in extInfo.keys():
-                        # print "普通消息"
-                        jujumsg = ('[%s]\n【口袋48房间消息】\n %s：%s\n' % (data['msgTimeStr'], extInfo['senderName'], extInfo['text'])) + jujumsg
-                    elif 'messageText' in extInfo.keys():
-                        # print "翻牌"
-                        jujumsg = ('[%s]\n【口袋48房间翻牌】\n %s：%s\n 【被翻牌】%s：%s\n' % (data['msgTimeStr'], extInfo['senderName'], extInfo['messageText'], extInfo['faipaiName'], extInfo['faipaiContent'])) + jujumsg
-                elif data['msgType'] == 1:
-                    bodys = json.loads(data['bodys'])
-                    # print "图片消息"
-                    if 'url' in bodys.keys():
-                        jujumsg = ('[%s]\n【口袋48房间图片】\n %s：%s\n' % (data['msgTimeStr'], extInfo['senderName'], bodys['url'])) + jujumsg
-                elif data['msgType'] == 2:
-                    # print "语音消息"
-                    if 'url' in bodys.keys():
-                        jujumsg = ('[%s]\n【口袋48房间语音】\n %s：%s\n' % (data['msgTimeStr'], extInfo['senderName'], bodys['url'])) + jujumsg
-            if jujumsg != "":
-                bot.SendTo(group, jujumsg)
+                    msg = ''
+                    # 判断重复
+                    msgTime_array = sorted(msgTime_array)
+                    if data['msgTime'] in msgTime_array or data['msgTime'] < msgTime_array[0]:
+                        continue
+                    else:
+                        msgTime_array.append(data['msgTime'])
+                    #
+                    # 文字消息
+                    extInfo = json.loads(data['extInfo'])
+                    if data['msgType'] == 0:
+                        if extInfo['messageObject'] == 'text':
+                            msg = ('[%s]\n【口袋48房间消息】\n %s：%s' % (data['msgTimeStr'], extInfo['senderName'], extInfo['text']))
+                        elif extInfo['messageObject'] == 'faipaiText':
+                            # 20171221 16:38 黄子璇(roomid=9108720)发生err：翻牌信息未返回faipaiName
+                            try:
+                                msg = ('[%s]\n【口袋48房间翻牌】\n %s：%s\n 【被翻牌】%s：%s\n' % (data['msgTimeStr'], extInfo['senderName'], extInfo['messageText'], extInfo['faipaiName'], extInfo['faipaiContent']))
+                            except:
+                                msg = ('[%s]\n【口袋48房间翻牌】\n %s：%s\n 【被翻牌】%s\n' % (data['msgTimeStr'], extInfo['senderName'], extInfo['messageText'], extInfo['faipaiContent']))
+                            #
+                        elif extInfo['messageObject'] == 'live':
+                            msg = ('小偶像开视频直播啦 \n 直播标题：%s \n 直播封面：%s \n开始时间：%s \n 直播地址：%s' % (extInfo['referenceContent'], 'https://source.48.cn' + extInfo['referencecoverImage'], data['msgTimeStr'], 'https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=' + extInfo['referenceObjectId']))
+                        elif extInfo['messageObject'] == 'diantai':
+                            msg = ('小偶像开电台啦 \n 电台标题：%s \n 电台封面：%s \n开始时间：%s \n 电台地址：%s' % (extInfo['referenceContent'], 'https://source.48.cn' + extInfo['referencecoverImage'], data['msgTimeStr'], 'https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=' + extInfo['referenceObjectId']))
+                        else:
+                            msg = '有未知格式的文字消息'
+                            WARN('有未知格式的文字消息')
+                            WARN(data)
+                    # image
+                    elif data['msgType'] == 1:
+                        bodys = json.loads(data['bodys'])
+                        msg = ('[%s]\n【口袋48房间图片】\n %s：%s' % (data['msgTimeStr'], extInfo['senderName'], bodys['url']))
+                    # voice
+                    elif data['msgType'] == 2:
+                        bodys = json.loads(data['bodys'])
+                        msg = ('[%s]\n【口袋48房间语音】\n %s：%s' % (data['msgTimeStr'], extInfo['senderName'], bodys['url']))
+                    else:
+                        msg = '有未知类型的消息'
+                        WARN('有未知类型的消息')
+                        WARN(data)
+                    bot.SendTo(group, msg)
+            else:
+                WARN('获取口袋房间信息出错')
+                WARN(response['message'])

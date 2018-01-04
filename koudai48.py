@@ -33,7 +33,7 @@ def stamp_to_str(timestamp):
 def get_juju(bot):
     global msgTime_array
     global firstcheck_juju
-    # 仅需修改播报的qq群号
+    # 仅需修改播报的qq群昵称
     gl = bot.List('group', groupid)
     if gl is not None:
         for group in gl:

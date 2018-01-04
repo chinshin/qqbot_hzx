@@ -67,7 +67,7 @@ def onQQMessage(bot, contact, member, content):
                     shutmember(bot, contact, member, content)
         #
         # 查撤回
-        if contact.qq == groupid:
+        if contact.nick == groupid:
             chatdetail.append(content)
             if len(chatdetail) > 6:
                 chatdetail = chatdetail[-6:]

@@ -34,11 +34,11 @@ def pro_id():
 # ----------------------口袋48设置----------------------
 
 
-# 口袋48:memberId
-# 黄子璇id:528331
-def memberId():
-    memberId = 528331
-    return memberId
+# # 口袋48:memberId
+# # 黄子璇id:528331
+# def memberId():
+#     memberId = 528331
+#     return memberId
 
 
 # 口袋48:roomId
@@ -73,7 +73,7 @@ def token():
 
 # qq群号
 def groupid():
-    id = '606642799'
+    id = 'BEJ48-黄子璇应援会'
     return id
 
 
@@ -96,6 +96,7 @@ def welcome():
 # 关键词触发
 # 禁言关键词,留空则无禁言
 def shutup():
+    # 范例：wordlist = ['fuck', 'cao']
     wordlist = []
     return wordlist
 

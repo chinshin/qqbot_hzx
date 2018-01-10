@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
 import setting
 import requests
 import json
-import sys
-# 消去https请求的不安全warning
-# import urllib3
-# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import urllib
 import hashlib
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 
 # -------------------------------
@@ -22,8 +15,8 @@ eWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'}
 def getSign(ret):
     # 将字典按键升序排列，返回一个元组tuple
     tuple = sorted(ret.items(), key=lambda e: e[0], reverse=False)
-    md5_string = urllib.urlencode(tuple)
-    md5_string += '&p=das41aq6'
+    md5_string = urllib.parse.urlencode(tuple).encode(encoding='utf_8', errors='strict')
+    md5_string += b'&p=das41aq6'
     # md5计算 & 十六进制转化 & 根据规则从第6位开始取16位
     sign = hashlib.md5(md5_string).hexdigest()[5: 21]
     return sign

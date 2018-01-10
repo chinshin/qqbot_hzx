@@ -1,4 +1,4 @@
-# qqbot_hzx v2.0
+# qqbot_hzx v2.1
 [TOC]
 ## 简介
 基于qqbot的QQ微打赏机器人(BEJ48-黄子璇)2.0版本
@@ -8,10 +8,25 @@
 
 
 环境：`Python 2.7`
-库：`requests`&`json`&`sys`&`urllib3`&`time`&`copy`&`re`
+库：`requests`&`json`&`sys`&`urllib3`&`time`&`copy`&`re`&`random`&`ConfigParser`&`os`
 
 
 ##  更新记录
+
+
+**2018.01.10更新**：v2.1 更新
+
+```
+1.移除了gettoken.py这个手动获取token脚本，现在token获取为自动（需在setting.conf中设置用户名和密码）；
+2.增加了roomID.conf和setting.conf两个配置文件。
+	roomID.conf中包括了截止2018年1月9日所有能获取的现役成员房间号，该文件无需改动。
+	此外，现在所有设置均在setting.conf中修改；
+3.增加了v2.3.conf，这是qqbot的配置文件（卢静一般为~/.qqbot-tmp/v2.3.conf）仅供参考；
+4.修改了koudai48.py，在定时任务中增加了查询失败后自动更新token的功能；
+5.修改了setting.py，现在setting.py作用是从setting.conf中获取配置；
+6.修改了start.py，现在start.py中的关键字回复只在setting.conf中指定的群中生效；
+```
+下一个版本目标是适配python3.5+环境
 
 
 **2018.01.05更新**：QQbot更新，腾讯关闭了获取真实QQ号的接口。请立即更新qqbot：在终端中输入`pip install --upgrade qqbot`，并在`setting.py`中将groupid中的QQ群号换成QQ群昵称。
@@ -25,38 +40,51 @@
 ## 文件介绍
 
 
-`start.py`  启动文件，包含关键字回复和定时任务
+`start.py`  ***启动文件1***，包含关键字回复和定时任务
 
 
-`koudai48.py` 启动文件2，包含口袋48查询的定时任务
+`koudai48.py` ***启动文件2***，包含口袋48查询的定时任务
 
 
-`group.py` 启动文件3，包含QQ群扩展功能
+`group.py` ***启动文件3***，包含QQ群扩展功能
 
 
-`setting.py`  所有的参数设置
+`setting.py`  读取配置文件中的设置
 
 
 `modian.py`  摩点（微打赏）相关
 
 
-`weibo.py`  新浪微博相关
+`weibo.py`  新浪微博相关
 
 
-`gettoken.py`  手动获取token（口袋48登录用）
+`roomID.conf`  包含所有成员名与房间号
+
+
+`setting.conf`  配置文件
+
+
+`v2.3.conf`  qqbot配置文件（仅供参考）
+
+
+
+```
+已删除：
+gettoken.py  手动获取token（口袋48登录用）
+```
 
 
 
 ##  安装和配置
   1.[qqbot安装](https://github.com/pandolia/qqbot#二安装方法):`pip install qqbot`
   
-  2.运行一次qqbot：终端输入`qqbot`，运行，然后退出。
+  2.运行一次qqbot：终端输入`qqbot`运行，然后在新终端中输入`qq stop`退出。
   
-  3.[插件配置](https://github.com/pandolia/qqbot#插件的配置-pluginpath-和-plugins-)：将`qqbot_hzx/`下7个文件拷贝至` ~/.qqbot-tmp/plugins`
+  3.[插件配置](https://github.com/pandolia/qqbot#插件的配置-pluginpath-和-plugins-)：将`qqbot_hzx/`下8个文件拷贝至` ~/.qqbot-tmp/plugins`
 
-  4.修改`setting.py`中所有参数
+  4.修改`setting.conf`中所有参数
   
-  5.[修改配置文件](https://github.com/pandolia/qqbot#配置文件的使用方法)，将`start.py`以及`koudai48.py`以及`group.py`添加到需要加载的插件列表。在终端输入`qqbot -u somebody`来运行
+  5.[修改配置文件](https://github.com/pandolia/qqbot#配置文件的使用方法)，可以参考项目中的`v2.3.conf`。将`start.py`以及`koudai48.py`以及`group.py`添加到需要加载的插件列表。在终端输入`qqbot -u somebody`来运行
   
   6.详细信息请阅读[qqbot说明文档](https://github.com/pandolia/qqbot/blob/master/README.MD)
 
@@ -70,26 +98,33 @@
     - 每天重启之前的信息提醒
   * 设置关键字回复
     - 回复“wds”或者“集资”：返回集资链接
-    - 回复“wds20”或者“rank”：返回集资榜top20
+    - 回复“集资榜”或者“jzb”：返回集资榜top20
+    - 回复“打卡榜”或者“dkb”：返回打卡榜top20
     - 回复“欢迎新人”：返回安利信息
     - 等等
 
 
-`setting.py`：
+`setting.conf`：
 
 
-  * 设置播报的QQ群号
+  * 设置小偶像名字（在roomID.conf中确认一下是否存在）以及队伍归属（snh bej gnz shy ckg中一项）
   * 设置摩点（微打赏）相关参数
     - pro_id即摩点项目网址后的数字
+    - 摩点网项目网址
+    - 摩点网项目名称
   * 设置口袋48相关参数
+  	- 用户名：口袋48手机号
+  	- 密码：口袋48密码
+  	- 输入用户名和密码后，token会在qqbot运行后自动获取
+  * QQ群设置
+  	- QQ群名称
+  	- 安利小偶像的信息
+  	- 禁言词语（需设置成管理员），留空则不禁言
   * 微博相关参数
-    - 设置方法可参考[nikochan.cc](http://www.nikochan.cc/2017/08/03/Crawlerweibonotloggin/)
-
-
-`gettoken.py`：
-
-
-  * 手动获取token
+   - containerID和api_url
+   - 设置方法可参考[nikochan.cc](http://www.nikochan.cc/2017/08/03/Crawlerweibonotloggin/)
+  * 代理设置
+	- 一般无需设置，只有频繁大量查询口袋48相关的时候必须设置
 
 
 `koudai48.py`：
@@ -97,6 +132,7 @@
 
   * 查询制定成员口袋房间，返回新消息
   * 直播提醒
+  * 查询失败则自动检查token并自动获取token
 
 
 `modian.py`：

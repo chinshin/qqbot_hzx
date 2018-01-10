@@ -1,10 +1,26 @@
 # -*- coding: utf-8 -*-
+import random
+import ConfigParser
+import os
+import requests
+import json
+import sys
+import urllib3
+reload(sys)
+sys.setdefaultencoding('utf8')
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 # 小偶像名字
 def idol_name():
-    idol_name = "黄子璇"
-    return idol_name
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # idol name
+        idol_name = cf.get('idol', 'name')
+    return str(idol_name)
 
 
 # ----------------------摩点微打赏设置----------------------
@@ -12,20 +28,44 @@ def idol_name():
 
 # 微打赏名称
 def wds_name():
-    wds_name = "摩点（微打赏）项目未设置\n拿小樱花的测试一下"
-    return wds_name
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # modian
+        modian_name = cf.get('modian', 'name')
+        # modian_url = cf.get('modian', 'url')
+        # pro_id = cf.get('modian', 'pro_id')
+    return str(modian_name)
 
 
 # 微打赏网址 建议使用短地址t.cn
 def wds_url():
-    wds_url = "摩点（微打赏）地址未设置"
-    return wds_url
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # modian
+        # modian_name = cf.get('modian', 'name')
+        modian_url = cf.get('modian', 'url')
+        # pro_id = cf.get('modian', 'pro_id')
+    return str(modian_url)
 
 
 # 微打赏项目对应pro_id
 def pro_id():
-    pro_id = 10250
-    return pro_id
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # modian
+        # modian_name = cf.get('modian', 'name')
+        # modian_url = cf.get('modian', 'url')
+        pro_id = cf.get('modian', 'pro_id')
+    return int(pro_id)
 
 
 # --------------------------------------------------------
@@ -34,35 +74,120 @@ def pro_id():
 # ----------------------口袋48设置----------------------
 
 
-# # 口袋48:memberId
-# # 黄子璇id:528331
-# def memberId():
-#     memberId = 528331
-#     return memberId
-
 
 # 口袋48:roomId
 # 黄子璇roomId：9108720
 def roomId():
-    roomId = 9108720
-    return roomId
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        group = cf.get('idol', 'group')
+        name = cf.get('idol', 'name')
+        file_path = os.path.join(BASE_DIR, 'roomID.conf')
+        with open(file_path, 'r') as cfgfile2:
+            cf.readfp(cfgfile2)
+            roomid = cf.get(group, name)
+    return int(roomid)
 
 
-# 设置口袋48账号密码
-def user(type):
-    user = '口袋48用户名'
-    password = '密码'
-    if type == 1:
-        return user
-    elif type == 2:
-        return password
-
-
-# 手动运行gettoken.py手动获取token，然后填入下方
+# 获取配置中存储的token
 # token 存活时间为 30 天
 def token():
-    token = 'token填在这里'
-    return token
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # koudai48
+        # user = cf.get('koudai48', 'user')
+        # password = cf.get('koudai48', 'password')
+        token = cf.get('koudai48', 'token')
+    return str(token)
+
+
+# 验证token
+def token_verify():
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # koudai48
+        # user = cf.get('koudai48', 'user')
+        # password = cf.get('koudai48', 'password')
+        token = cf.get('koudai48', 'token')
+
+    ajax_url = 'https://puser.48.cn/usersystem/api/user/v1/show/cardInfo'
+    header = {
+        'Host': 'puser.48.cn',
+        'version': '5.0.1',
+        'os': 'android',
+        'Accept-Encoding': 'gzip',
+        'IMEI': '866716037125810',
+        'User-Agent': 'Mobile_Pocket',
+        'Content-Length': '0',
+        'Connection': 'Keep-Alive',
+        'Content-Type': 'application/json;charset=utf-8',
+        'token': token
+    }
+    response = requests.post(
+        ajax_url,
+        headers=header,
+        verify=False
+    ).json()
+    if response['status'] == 200:
+        return True
+    else:
+        return False
+
+
+# 获取新token
+def getNewToken():
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # koudai48
+        user = cf.get('koudai48', 'user')
+        password = cf.get('koudai48', 'password')
+        token = cf.get('koudai48', 'token')
+        # request
+        ajax_url = 'https://puser.48.cn/usersystem/api/user/v1/login/phone'
+        header = {
+            'Host': 'puser.48.cn',
+            'version': '5.0.1',
+            'os': 'android',
+            'Accept-Encoding': 'gzip',
+            'IMEI': '866716037125810',
+            'User-Agent': 'Mobile_Pocket',
+            'Content-Length': '75',
+            'Connection': 'Keep-Alive',
+            'Content-Type': 'application/json;charset=utf-8',
+            'token': '0'
+        }
+        form = {
+            "latitude": 0,
+            "longitude": 0,
+            "password": password,
+            "account": user
+        }
+        response = requests.post(
+            ajax_url,
+            data=json.dumps(form),
+            headers=header,
+            verify=False
+        ).json()
+        if response['status'] == 200:
+            newToken = response['content']['token']
+            cf.set('koudai48', 'token', newToken)
+            with open(file_path, 'w+') as cfgfile2:
+                cf.write(cfgfile2)
+            return 'success'
+        else:
+            return response['message']
 
 
 # --------------------------------------------------------
@@ -71,33 +196,43 @@ def token():
 # ----------------------qq群设置----------------------
 
 
-# qq群号
+# qq群昵称
 def groupid():
-    id = 'BEJ48-黄子璇应援会'
-    return id
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        group_name = cf.get('QQqun', 'name')
+    return str(group_name)
 
 
 # 欢迎信息
 def welcome():
-    msg = "欢迎聚聚加入BEJ48-黄子璇的应援群！" + '\n' + "大家可以叫子璇宝宝叁玖 ~" + '\n' +\
-        "叁玖是一只土生土长的北京姑娘，生日是5月20日，生在2002年的金牛座。" + '\n' + "九春三秋，只为遇见你。" +\
-        '\n' + "希望你我可以相知相识～" + '\n' + '\n' + "三分钟带你领略甜甜的叁玖" + '\n' +\
-        "首演unit《爱的魔法》：http://t.cn/RolMikW" + '\n' + '\n' +\
-        "出道以来第五场公演unit《爱的魔法》：http://t.cn/RCb8QBn" + '\n' + '\n' +\
-        "第四届总决选拉票公演：http://t.cn/RCb8gzH" + '\n' + '\n' +\
-        "更多补档内容请戳b站：BEJ48-黄子璇应援会 http://t.cn/RCbRLjZ" + '\n' + '\n' +\
-        "最后也请聚聚关注下叁玖的微博与超级话题吧" + '\n' + "@BEJ48-黄子璇：http://t.cn/RCbRiAe" +\
-        '\n' + "@BEJ48-黄子璇应援会：http://t.cn/RCbRNu1" + '\n' +\
-        "#黄子璇#超级话题：http://t.cn/RCbRQg2" + '\n' + '\n' +\
-        "让我们陪着这个刚出道不久的小孩子长大，看着她成为更好的人，一起给她最好的应援吧~（鞠躬）"
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        # group_welcome
+        words = cf.get('QQqun', 'welcome')
+        msg = words.replace('\\n', '\n')
     return msg
 
 
 # 关键词触发
 # 禁言关键词,留空则无禁言
 def shutup():
-    # 范例：wordlist = ['fuck', 'cao']
-    wordlist = []
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        shutword = cf.get('QQqun', 'shutword')
+        if shutword:
+            wordlist = shutword.split(',')
+        else:
+            wordlist = []
     return wordlist
 
 
@@ -109,14 +244,51 @@ def shutup():
 
 # 手机网页版微博地址
 def weibo_url():
-    url = 'https://m.weibo.cn/api/container/getIndex?containerid=1076036212622903'
-    return url
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        weibo_url = cf.get('weibo', 'weiboURL')
+    return str(weibo_url)
 
 
 # weibo container id
 def weibo_id():
-    id = 1076036212622903
-    return id
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        weibo_id = cf.get('weibo', 'weiboID')
+    return int(weibo_id)
+
+
+# --------------------------------------------------------
+
+
+# ----------------------代理设置----------------------
+
+
+def proxy():
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'setting.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        https = cf.get('proxy', 'https')
+        if https:
+            list_https = https.split(',')
+            proxies = {}
+            proxies['https'] = random.choice(list_https)
+        else:
+            list_https = []
+            proxies = {}
+    # list_http = ['113.118.98.220:9797', '183.62.196.10:3128', '61.135.217.7:80', '61.155.164.109:3128', '61.155.164.107:3128']
+    # list_https = ['114.115.140.25:3128', '59.56.74.205:3128', '116.31.75.97:3128', '121.43.178.58:3128', '113.79.75.82:9797']
+    # proxies['http'] = random.choice(list_http)
+    # proxies['https'] = random.choice(list_https)
+    return proxies
 
 
 # --------------------------------------------------------

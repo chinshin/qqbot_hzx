@@ -14,6 +14,20 @@
 ##  更新记录
 
 
+**2018.01.12更新**：摩点查询逻辑更新
+
+```
+代码改动：
+start.py：
+	1.引入time库；
+	2.摩点查询逻辑由获取评论总数改为基于时间更新。
+modian.py：
+	1.引入time库；
+	2.删除diff()和num()方法；
+	3.增加newOrder(stamp, delay)方法，基于10位时间戳和查询时间段的查询逻辑。极大减少了request次数，更有效率。
+```
+
+
 **2018.01.10更新**：v2.1 更新
 
 ```
@@ -121,8 +135,8 @@ gettoken.py  手动获取token（口袋48登录用）
   	- 安利小偶像的信息
   	- 禁言词语（需设置成管理员），留空则不禁言
   * 微博相关参数
-   - containerID和api_url
-   - 设置方法可参考[nikochan.cc](http://www.nikochan.cc/2017/08/03/Crawlerweibonotloggin/)
+    - containerID和api_url
+    - 设置方法可参考[nikochan.cc](http://www.nikochan.cc/2017/08/03/Crawlerweibonotloggin/)
   * 代理设置
 	- 一般无需设置，只有频繁大量查询口袋48相关的时候必须设置
 

@@ -8,6 +8,7 @@ import sys
 # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import urllib
 import hashlib
+import time
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -115,70 +116,87 @@ def rank(type):
         return msg
 
 
-# 支持的次数&人数
-def num():
-    datas = {'status': 0}
-    page = 1
-    sum = 0
-    sum_person = 0
-    person = []
-    # 总次数
-    while True:
-        orders = getOrders(setting.pro_id(), page)
-        page += 1
-        if int(orders['status']) == 2:
-            datas['status'] = 2
-            datas['err_msg'] = orders['message']
-            break
-        if len(orders['data']) == 0:
-            break
-        sum += len(orders['data'])
-        for data in orders['data']:
-            if data['nickname'] not in person:
-                person.append(data['nickname'])
-    datas['sum'] = sum
-    sum_person = len(person)
-    datas['sum_person'] = sum_person
-    return datas
+# 旧逻辑代码，已不再使用
+# # 支持的次数&人数
+# def num():
+#     datas = {'status': 0}
+#     page = 1
+#     sum = 0
+#     sum_person = 0
+#     person = []
+#     # 总次数
+#     while True:
+#         orders = getOrders(setting.pro_id(), page)
+#         page += 1
+#         if int(orders['status']) == 2:
+#             datas['status'] = 2
+#             datas['err_msg'] = orders['message']
+#             break
+#         if len(orders['data']) == 0:
+#             break
+#         sum += len(orders['data'])
+#         for data in orders['data']:
+#             if data['nickname'] not in person:
+#                 person.append(data['nickname'])
+#     datas['sum'] = sum
+#     sum_person = len(person)
+#     datas['sum_person'] = sum_person
+#     return datas
+# 
+# 
+# # 返回集资信息
+# def diff(num):
+#     detail = getDetail(str(setting.pro_id()))
+#     msg = ''
+#     if num > 20:
+#         num = 20
+#     order = getOrders(setting.pro_id(), 1)
+#     if int(order['status']) == 2:
+#         return order['message']
+#     for i in range(0, num):
+#         msg += "ID: " + order['data'][i]['nickname'] +\
+#             " 的聚聚刚刚在【" + setting.wds_name() + "】中支持了 ¥" +\
+#             str(order['data'][i]['backer_money']) + '\n' + "感谢这位聚聚对" +\
+#             setting.idol_name() + "的支持" + '\n'
+#     msg += '【摩点】：' + setting.wds_url() + '\n目前集资进度：¥' +\
+#         str(detail['data'][0]['already_raised']) + '\n目标：¥' +\
+#         str(detail['data'][0]['goal'])
+#     return msg
 
 
-# 返回集资信息
-def diff(num):
-    detail = getDetail(str(setting.pro_id()))
-    msg = ''
-    if num > 20:
-        num = 20
-    order = getOrders(setting.pro_id(), 1)
-    if int(order['status']) == 2:
-        return order['message']
-    for i in range(0, num):
-        msg += "ID: " + order['data'][i]['nickname'] +\
-            " 的聚聚刚刚在【" + setting.wds_name() + "】中支持了 ¥" +\
-            str(order['data'][i]['backer_money']) + '\n' + "感谢这位聚聚对" +\
-            setting.idol_name() + "的支持" + '\n'
-    msg += '【摩点】：' + setting.wds_url() + '\n目前集资进度：¥' +\
-        str(detail['data'][0]['already_raised']) + '\n目标：¥' +\
-        str(detail['data'][0]['goal'])
-    return msg
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def newOrder(stamp10, secondsDelay):
+    newOrders = []
+    # 获取一次订单信息，返回一个dictionary
+    orderDict = getOrders(setting.pro_id(), 1)
+    # 查询失败则返回错误信息
+    if int(orderDict['status']) == 2:
+        return orderDict['message']
+    # 查询成功，遍历data
+    for data in orderDict['data']:
+        pay_time = data['pay_time']
+        # 将字符串时间转换为unix时间戳
+        data['pay_time'] = int(time.mktime(time.strptime(pay_time, '%Y-%m-%d %H:%M:%S')))
+        # 筛选订单时间在查询时间前的设定时间段之间的订单
+        if data['pay_time'] >= stamp10 - secondsDelay and data['pay_time'] < stamp10:
+            newOrders.append(data)
+    msgDict = {}
+    # 有新订单
+    if newOrders:
+        # 获取项目信息
+        detail = getDetail(setting.pro_id())
+        # 查询失败则返回错误信息
+        if int(detail['status']) == 2:
+            return detail['message']
+        # 查询成功，初始化消息
+        msgDict['msg'] = []
+        msg = ''
+        for newOrder in newOrders:
+            msg = "ID: " + newOrder['nickname'] +\
+                " 的聚聚刚刚在【" + setting.wds_name() + "】中支持了 ¥" +\
+                str(newOrder['backer_money']) + '\n' + "感谢这位聚聚对" +\
+                setting.idol_name() + "的支持" + '\n'
+            msgDict['msg'].append(msg)
+        msgDict['end'] = '【摩点】：' + setting.wds_url() + '\n目前集资进度：¥' +\
+            str(detail['data'][0]['already_raised']) + '\n目标：¥' +\
+            str(detail['data'][0]['goal'])
+    return msgDict

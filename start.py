@@ -4,9 +4,10 @@ from qqbot import qqbotsched
 import weibo
 import copy
 import modian
+import time
 
-global commentNum
-global firstcheck
+# global commentNum
+# global firstcheck
 
 global weibo_id_array
 global firstcheck_weibo
@@ -14,8 +15,8 @@ global firstcheck_weibo
 weibo_id_array = []
 firstcheck_weibo = 1
 
-commentNum = 0
-firstcheck = 1
+# commentNum = 0
+# firstcheck = 1
 
 groupid = setting.groupid()
 
@@ -94,25 +95,37 @@ def mytask2(bot):
             bot.SendTo(group, attention)
 
 
-# 定时任务。每3分钟获取一次微打赏数据，如果有新的集资评论，自动发送到群。
+# 定时任务。每1分钟获取一次微打赏数据，如果有新的集资评论，自动发送到群。
 # 可修改定时任务时间来提高查询频率，其他无需修改
+# 若修改了查询频率，一定要修改下方newOrder方法的第二个参数
 @qqbotsched(hour='0-23', minute='0-59')
 def mytask(bot):
-    global commentNum
-    global firstcheck
     gl = bot.List('group', groupid)
     if gl is not None:
         for group in gl:
-            modian_dict = modian.num().copy()
-            if modian_dict['status'] == 2:
-                bot.SendTo(group, '摩点项目num查询失败')
-                bot.SendTo(group, modian_dict['err_msg'])
-            elif modian_dict['status'] == 0:
-                commentNum_new = modian_dict['sum']
-                if firstcheck == 1:
-                    commentNum = commentNum_new
-                    firstcheck = 0
-                difference = commentNum_new - commentNum
-                if difference:
-                    commentNum = commentNum_new
-                    bot.SendTo(group, modian.diff(difference))
+            # 获取当前unix时间（10位，单位为秒）
+            stampTime = int(time.time())
+            # 调用modian.py的newOrder方法
+            # 第二个参数是查询时间段：60即查询当前时间前60s得新集资
+            # 若修改了查询频率，则一定要修改第二个参数
+            msgDict = modian.newOrder(stampTime, 60)
+            # 返回了一个字典
+            if msgDict:
+                for msg in msgDict['msg']:
+                    msg += msgDict['end']
+                    bot.SendTo(group, msg)
+            #
+            # # 旧逻辑代码
+            # modian_dict = modian.num().copy()
+            # if modian_dict['status'] == 2:
+            #     bot.SendTo(group, '摩点项目num查询失败')
+            #     bot.SendTo(group, modian_dict['err_msg'])
+            # elif modian_dict['status'] == 0:
+            #     commentNum_new = modian_dict['sum']
+            #     if firstcheck == 1:
+            #         commentNum = commentNum_new
+            #         firstcheck = 0
+            #     difference = commentNum_new - commentNum
+            #     if difference:
+            #         commentNum = commentNum_new
+            #         bot.SendTo(group, modian.diff(difference))

@@ -35,17 +35,17 @@ def onQQMessage(bot, contact, member, content):
         elif content == "独占":
             duzhan = "独占请集资" + '\n' + setting.wds_name() + '\n' + setting.wds_url()
             bot.SendTo(contact, duzhan)
-        elif content == "想39":
-            xiang39 = "补档请看" + '\n' + "http://t.cn/RCbRLjZ"
-            bot.SendTo(contact, xiang39)
-        elif content == "剁椒鱼头":
-            duojiaoyutou = "我们都爱剁椒鱼头"
-            bot.SendTo(contact, duojiaoyutou)
+        # elif content == "想39":
+        #     xiang39 = "补档请看" + '\n' + "http://t.cn/RCbRLjZ"
+        #     bot.SendTo(contact, xiang39)
+        # elif content == "剁椒鱼头":
+        #     duojiaoyutou = "我们都爱剁椒鱼头"
+        #     bot.SendTo(contact, duojiaoyutou)
         elif content == "欢迎新人":
             welcome = setting.welcome()
             bot.SendTo(contact, welcome)
         elif content == "help":
-            help = '''废物机器人口令帮助：\n“集资”或“打卡”：返回集资地址"\n“集资榜”或“jzb”：返回集资金额榜单\n“打卡榜”或“dkb”：返回打卡天数榜单\n“想39”：返回B站应援会主页\n“欢迎新人”：返回欢迎信息\n更多功能敬请期待'''
+            help = '''废物机器人口令帮助：\n“集资”或“打卡”：返回集资地址"\n“集资榜”或“jzb”：返回集资金额榜单\n“打卡榜”或“dkb”：返回打卡天数榜单\n'''
             bot.SendTo(contact, help)
 
 

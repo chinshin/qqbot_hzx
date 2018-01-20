@@ -92,6 +92,22 @@ def roomId():
     return int(roomid)
 
 
+# 获取房间号列表
+# idolArray格式：idolArray = ['gnz陈珂', 'bej马玉灵', 'bej黄恩茹']
+def roomIds(idolArray):
+    roomIdArray = []
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, 'roomID.conf')
+    cf = ConfigParser.ConfigParser()
+    with open(file_path, 'r') as cfgfile:
+        cf.readfp(cfgfile)
+        for idol in idolArray:
+            roomid = cf.get(idol[0:3], idol[3:])
+            roomIdArray.append(int(roomid))
+    # 返回int房间号组成的列表
+    return roomIdArray
+
+
 # 获取配置中存储的token
 # token 存活时间为 30 天
 def token():

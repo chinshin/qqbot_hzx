@@ -7,11 +7,23 @@
 本项目是一个插件，依赖于: [pandolia/qqbot](https://github.com/pandolia/qqbot) 
 
 
-环境：`Python 2.7`
+环境：`Python 2.7` + `Python 3.5+`
 库：`requests`&`json`&`sys`&`urllib3`&`time`&`copy`&`re`&`random`&`ConfigParser`&`os`
 
 
 ##  更新记录
+
+
+**2018.01.20更新**：测试版：增加python3支持
+
+
+增加了py3文件夹。
+
+基于python3修改了原代码，使用python3环境的用户请使用py3文件夹下的文件。
+
+注意，该版本只经过了简单功能测试，保证大部分功能可用，可能存在部分不兼容问题。如果出现问题，请在 [Issues](https://github.com/chinshin/qqbot_hzx/issues) 中反馈。
+
+另外，发现本插件在Windows环境下存在不同形式的编码问题（UnicodeDcodeError）。
 
 
 **2018.01.12更新**：摩点查询逻辑更新

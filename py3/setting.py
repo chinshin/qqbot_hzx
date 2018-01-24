@@ -13,7 +13,8 @@ def idol_name():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # idol name
         idol_name = cf.get('idol', 'name')
@@ -28,7 +29,8 @@ def wds_name():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # modian
         modian_name = cf.get('modian', 'name')
@@ -42,7 +44,8 @@ def wds_url():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # modian
         # modian_name = cf.get('modian', 'name')
@@ -56,7 +59,8 @@ def pro_id():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # modian
         # modian_name = cf.get('modian', 'name')
@@ -78,12 +82,14 @@ def roomId():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         group = cf.get('idol', 'group')
         name = cf.get('idol', 'name')
         file_path = os.path.join(BASE_DIR, 'roomID.conf')
-        with open(file_path, 'r') as cfgfile2:
+        # with open(file_path, 'r') as cfgfile2:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile2:
             cf.readfp(cfgfile2)
             roomid = cf.get(group, name)
     return int(roomid)
@@ -95,7 +101,8 @@ def token():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # koudai48
         # user = cf.get('koudai48', 'user')
@@ -109,7 +116,8 @@ def token_verify():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # koudai48
         # user = cf.get('koudai48', 'user')
@@ -145,7 +153,8 @@ def getNewToken():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # koudai48
         user = cf.get('koudai48', 'user')
@@ -198,7 +207,8 @@ def groupid():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         group_name = cf.get('QQqun', 'name')
     return str(group_name)
@@ -209,7 +219,8 @@ def welcome():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         # group_welcome
         words = cf.get('QQqun', 'welcome')
@@ -223,7 +234,8 @@ def shutup():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         shutword = cf.get('QQqun', 'shutword')
         if shutword:
@@ -244,7 +256,8 @@ def weibo_url():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         weibo_url = cf.get('weibo', 'weiboURL')
     return str(weibo_url)
@@ -255,7 +268,8 @@ def weibo_id():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         weibo_id = cf.get('weibo', 'weiboID')
     return int(weibo_id)
@@ -271,7 +285,8 @@ def proxy():
     BASE_DIR = os.path.dirname(__file__)
     file_path = os.path.join(BASE_DIR, 'setting.conf')
     cf = configparser.ConfigParser()
-    with open(file_path, 'r') as cfgfile:
+    # with open(file_path, 'r') as cfgfile:
+    with open(file_path, 'r', encoding='utf-8', errors='ignore') as cfgfile:
         cf.readfp(cfgfile)
         https = cf.get('proxy', 'https')
         if https:
@@ -289,4 +304,3 @@ def proxy():
 
 
 # --------------------------------------------------------
-print(groupid())

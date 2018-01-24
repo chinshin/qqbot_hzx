@@ -23,7 +23,7 @@
 
 注意，该版本只经过了简单功能测试，保证大部分功能可用，可能存在部分不兼容问题。如果出现问题，请在 [Issues](https://github.com/chinshin/qqbot_hzx/issues) 中反馈。
 
-另外，发现本插件在Windows环境下存在不同形式的解码问题（UnicodeDcodeError）。
+另外，发现本插件在Windows环境下存在不同形式的解码问题（UnicodeDecodeError）。
 
 
 **2018.01.12更新**：摩点查询逻辑更新

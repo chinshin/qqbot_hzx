@@ -100,6 +100,9 @@ def get_juju(bot):
                         msg = ('小偶像开视频直播啦 \n 直播标题：%s \n 直播封面：%s \n开始时间：%s \n 直播地址：%s' % (extInfo['referenceContent'], 'https://source.48.cn' + extInfo['referencecoverImage'], data['msgTimeStr'], 'https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=' + extInfo['referenceObjectId']))
                     elif extInfo['messageObject'] == 'diantai':
                         msg = ('小偶像开电台啦 \n 电台标题：%s \n 电台封面：%s \n开始时间：%s \n 电台地址：%s' % (extInfo['referenceContent'], 'https://source.48.cn' + extInfo['referencecoverImage'], data['msgTimeStr'], 'https://h5.48.cn/2017appshare/memberLiveShare/index.html?id=' + extInfo['referenceObjectId']))
+                    elif extInfo['messageObject'] == 'idolFlip':
+                        # INFO('idol翻牌')
+                        msg = ('%s：%s\n问题内容：%s\n%s' % (extInfo['senderName'], extInfo['idolFlipTitle'], extInfo['idolFlipContent'], data['msgTimeStr']))
                     else:
                         msg = '有未知格式的文字消息'
                         WARN('有未知格式的文字消息')

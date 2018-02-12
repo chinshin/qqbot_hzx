@@ -1,6 +1,9 @@
 # qqbot_hzx v2.1
 [TOC]
 ## 简介
+
+**2018.02.12：不再维护，移至酷Q [chinshin/CQBot_hzx](https://github.com/chinshin/CQBot_hzx)**
+
 基于qqbot的QQ微打赏机器人(BEJ48-黄子璇)2.0版本
 
 
@@ -12,6 +15,11 @@
 
 
 ##  更新记录
+
+**2018.02.12更新**：本项目已经稳定，不再开发，（随缘）维护。由于基于web QQ的qqbot稳定性不足，现开发平台移至酷Q，详情可见：[chinshin/CQBot_hzx](https://github.com/chinshin/CQBot_hzx)
+
+
+**2018.02.05更新**：完善了python3版本，增加了对口袋偶像翻牌功能的识别;更新了部分口袋房间ID
 
 
 **2018.01.20更新**：测试版：增加python3支持

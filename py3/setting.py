@@ -189,7 +189,7 @@ def getNewToken():
         if response['status'] == 200:
             newToken = response['content']['token']
             cf.set('koudai48', 'token', newToken)
-            with open(file_path, 'w+') as cfgfile2:
+            with open(file_path, 'w+', encoding='utf-8') as cfgfile2:
                 cf.write(cfgfile2)
             return 'success'
         else:

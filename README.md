@@ -4,6 +4,8 @@
 
 **2018.02.12：不再维护，移至酷Q [chinshin/CQBot_hzx](https://github.com/chinshin/CQBot_hzx)**
 
+**试试我的网站 [RealFairy.cn/idol](https://RealFairy.cn/idol)**
+
 基于qqbot的QQ微打赏机器人(BEJ48-黄子璇)2.0版本
 
 
